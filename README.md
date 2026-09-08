@@ -27,7 +27,7 @@ $$
 Gradient magnitude approximation:
 
 $$
-|\nabla I| = \min\left(|G_x| + |G_y|, \, 255\right)
+|\nabla I| = \min(|G_x| + |G_y|, 255)
 $$
 
 ---
