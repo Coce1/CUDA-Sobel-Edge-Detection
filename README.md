@@ -20,11 +20,15 @@ This repository documents the step-by-step development of parallel algorithms on
 
 The 2D Sobel operator computes spatial gradient vectors for each pixel coordinate $(x, y)$:
 
-$$G_x = \begin{bmatrix} -1 & 0 & +1 \\ -2 & 0 & +2 \\ -1 & 0 & +1 \end{bmatrix} * I \quad , \quad G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ +1 & +2 & +1 \end{bmatrix} * I$$
+$$
+G_x = \begin{bmatrix} -1 & 0 & +1 \\ -2 & 0 & +2 \\ -1 & 0 & +1 \end{bmatrix} * I \quad , \quad G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ +1 & +2 & +1 \end{bmatrix} * I
+$$
 
 Gradient magnitude approximation:
 
-$$\vert{}\nabla I\vert{} = \min\left(\vert{}G_x\vert{} + \vert{}G_y\vert{}, \, 255\right)$$
+$$
+|\nabla I| = \min\left(|G_x| + |G_y|, \, 255\right)
+$$
 
 ---
 
