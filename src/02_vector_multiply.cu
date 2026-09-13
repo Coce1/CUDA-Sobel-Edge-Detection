@@ -31,6 +31,7 @@ int main() {
 
     // 5. Transfert Device -> Host
     cudaMemcpy(h_array.data(), d_array, bytes, cudaMemcpyDeviceToHost);
+    // ou cudaMemcpy(&h_array[0], d_array, bytes, cudaMemcpyDeviceToHost)
     cudaFree(d_array);
 
     std::cout << "Apres GPU : ";
