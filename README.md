@@ -12,7 +12,6 @@ This repository documents the step-by-step development of parallel algorithms on
 2. **`02_vector_multiply.cu`**: Explicit memory management (`cudaMalloc`, `cudaMemcpy`, `cudaFree`) and 1D boundary handling.
 3. **`03_sobel_basic.cu`**: 2D discrete convolution operator applied on a synthetic image matrix.
 4. **`04_sobel_cpu_vs_gpu.cu`**: Sequential CPU vs. Parallel GPU execution benchmark timed via `cudaEvent_t` ($2048 \times 2048$ resolution).
-5. **`05_sobel_shared_memory.cu`**: Advanced L1 Cache / Shared Memory (`__shared__`) tiling with halo exchange benchmarked on 16 Megapixels ($4096 \times 4096$).
 
 ---
 
@@ -47,4 +46,3 @@ make
 # Run specific modules
 ./01_hello
 ./04_benchmark
-./05_shared
