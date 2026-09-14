@@ -1,15 +1,16 @@
 #include <iostream>
 #include <vector>
 
-__global__ void multiplyKernel(int* d_array, int size) {
+__global__ void multiplyKernel(int* d_array, int size, int a) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < size) {
-        d_array[idx] = d_array[idx] * 10;
+        d_array[idx] = d_array[idx] * a;
     }
 }
 
 int main() {
     int N = 5;
+    int a = 10;
     size_t bytes = N * sizeof(int);
 
     // 1. Host allocation
