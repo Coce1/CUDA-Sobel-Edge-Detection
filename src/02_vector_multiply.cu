@@ -21,7 +21,7 @@ int main() {
 
     // 2. Device allocation
     int* d_array;
-    cudaMalloc(&d_array, bytes);
+    cudaMalloc((void**)&d_array, bytes);
 
     // 3. Transfert Host -> Device
     cudaMemcpy(d_array, h_array.data(), bytes, cudaMemcpyHostToDevice);
