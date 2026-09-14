@@ -61,7 +61,8 @@ int main() {
     cudaMemcpy(d_in, h_in.data(), bytes, cudaMemcpyHostToDevice);
 
     dim3 threadsPerBlock(16, 16);
-    dim3 numBlocks((width + 15) / 16, (height + 15) / 16);
+    dim3 numBlocks((width + threadsPerBlock.x - 1) / threadsPerBlock.x, 
+                    (height + threadsPerBlock.y - 1) / threadsPerBlock.y);
 
     cudaEvent_t start_gpu, stop_gpu;
     cudaEventCreate(&start_gpu);
