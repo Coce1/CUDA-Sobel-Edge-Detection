@@ -29,8 +29,8 @@ __global__ void sobelFilter(const unsigned char* __restrict__ d_in,unsigned char
     __syncthreads();
 
     if (x < width  && y < height ) {
-        int lx = threadIdx.x + Halo;
-        int ly = threadIdx.y + Halo;
+        int lx = threadIdx.x + HALO;
+        int ly = threadIdx.y + HALO;
 
         int gx = -s_tile[(ly-1)*SHARED_DIM + (lx-1)] + s_tile[(ly-1)*SHARED_DIM + (lx+1)]
                  -2*s_tile[ly*SHARED_DIM + (lx-1)]   + 2*s_tile[ly*SHARED_DIM + (lx+1)]
