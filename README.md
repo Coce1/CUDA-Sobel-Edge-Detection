@@ -10,8 +10,8 @@ This repository documents the step-by-step development of parallel algorithms on
 
 1. **`src/sobel_cpu.cpp`**: Sequential CPU implementation.
 2. **`src/sobel_naive.cu`**: Basic 2D convolution using global memory.
-3. **`src/sobel_shared.cu`**: Optimized 2D convolution featuring shared memory and 1D coalesced memory access.
-4. **`src/benchmark.cu`**: Comparative benchmark suite (CPU vs. Naive GPU vs. Shared GPU) measuring execution time and effective bandwidth (GB/s).
+3. **`src/sobel_shared_tiled.cu`**: Optimized 2D convolution featuring shared memory and 1D coalesced memory access.
+4. **`src/baenchmarks.cu`**: Comparative benchmark suite (CPU vs. Naive GPU vs. Shared GPU) measuring execution time and effective bandwidth (GB/s).
 
 ---
 
