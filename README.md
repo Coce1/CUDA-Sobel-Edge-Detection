@@ -43,6 +43,5 @@ $$
 # Build all examples
 make
 
-# Run specific modules
-./01_hello
-./04_benchmark
+# Run baenchmarks
+./sobel_benchmark
