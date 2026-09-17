@@ -1,7 +1,9 @@
 #include <vector>
 #include <cmath>
+#include <algorithm>
+#include "../include/sobel.cuh"
 
-void sobelCPU(const std::vector<int>& in, std::vector<int>& out, int width, int height) {
+void sobelCPU(const std::vector<unsigned char>& in, std::vector<unsigned char>& out, int width, int height) {
     for (int y = 1; y < height - 1; y++) {
         for (int x = 1; x < width - 1; x++) {
             int gx = -in[(y - 1) * width + (x - 1)] + in[(y - 1) * width + (x + 1)]
