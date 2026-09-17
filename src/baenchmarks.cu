@@ -81,7 +81,7 @@ int main() {
     std::cout << "- Speedup vs CPU    : " << (cpu_duration.count() / naive_duration) << "x" << std::endl;
     std::cout << "- Bandwidth    : " << naive_bw << " Go/s" << std::endl;
 
-    std::cout << "\n[GPU] Version 2 : Optimisee (Memoire Partagee + Coalescence 1D) :" << std::endl;
+    std::cout << "\n[GPU] Version 2 : Optimised (Shared Memory + Coalescing) :" << std::endl;
     std::cout << "- Execution time : " << shared_duration << " ms" << std::endl;
     std::cout << "- Speedup vs CPU    : " << (cpu_duration.count() / shared_duration) << "x" << std::endl;
     std::cout << "- Bandwidth    : " << shared_bw << " Go/s" << std::endl;
