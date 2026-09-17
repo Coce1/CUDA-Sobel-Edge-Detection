@@ -43,6 +43,10 @@ $$
 # Build all examples
 make
 
+# Run baenchmarks
+./sobel_benchmark
+
+
 ## 📊 Benchmark & Performance Audit
 
 Tests conducted on an NVIDIA GPU via Google Colab with an input matrix size of **2048 × 2048** (8-bit grayscale pixels, ~4.19 MB):
@@ -58,6 +62,3 @@ Tests conducted on an NVIDIA GPU via Google Colab with an input matrix size of *
 - **L2 Cache vs. Shared Memory:** The 2D Sobel kernel exhibits low arithmetic intensity (few arithmetic operations per memory transaction). On modern NVIDIA architectures, spatial locality is efficiently captured by hardware L1/L2 caches in the global memory implementation, avoiding manual buffering penalties.
 - **Divergence & Boundary Overhead:** The shared memory implementation incurs extra overhead from conditional zero-padding on tile halos, leading to warp divergence and thread serialization at matrix boundaries.
 - **Synchronization Penalty:** Explicit barrier synchronization (`__syncthreads()`) adds latency that outweighs the memory access gains for small stencil radii on lightweight computational kernels.
-
-# Run baenchmarks
-./sobel_benchmark
