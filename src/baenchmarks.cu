@@ -65,7 +65,7 @@ int main() {
 
     // HPC metric calculation: Effective Bandwidth (GB/s)
     // Formula: (Total bytes read + Total bytes written) / (Time in milliseconds * 1e6)
-    float total_GB = (2.0f * bytes) / 1.0e9f;                                             // Lecture (1x) + Écriture (1x) = 2 * bytes
+    float total_GB = (2.0f * bytes) / 1.0e9f;                                             // Reading (1x) + Writing (1x) = 2 * bytes
     float naive_bw = total_GB / (naive_duration / 1000.0f);
     float shared_bw = total_GB / (shared_duration / 1000.0f);
 
