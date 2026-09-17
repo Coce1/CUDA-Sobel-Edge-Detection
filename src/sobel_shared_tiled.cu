@@ -11,7 +11,7 @@ __global__ void sobelFilter(const unsigned char* __restrict__ d_in,unsigned char
     int y = blockIdx.y * TILE_DIM + threadIdx.y;
     int tid = threadIdx.y * TILE_DIM + threadIdx.x;
 
-    // 1. Chargement coopératif avec gestion du Zero Padding sur les bords extrêmes
+    // 1. Cooperative loading with zero-padding management at the extreme edges
     for (int i = tid; i < SHARED_DIM * SHARED_DIM; i += TILE_DIM * TILE_DIM) {
         int local_y = i / SHARED_DIM;
         int local_x = i % SHARED_DIM;

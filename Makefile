@@ -1,27 +1,27 @@
-# Compilateur
+# Compiler
 NVCC = nvcc
 
-# Options de compilation (Optimisation maximale)
+# Compilation options (Maximum optimization)
 NVCC_FLAGS = -O3
 
-# Dossiers de l'arborescence
+# Directory tree folders
 SRC_DIR = src
 INC_DIR = include
 
-# Liste des fichiers sources
+# List of source files
 CU_SOURCES = $(SRC_DIR)/baenchmarks.cu $(SRC_DIR)/sobel_naive.cu $(SRC_DIR)/sobel_shared_tiled.cu
 CPP_SOURCES = $(SRC_DIR)/sobel_cpu.cpp
 
-# Nom de l'exécutable final
+# Name of the final executable
 TARGET = sobel_benchmark
 
-# Règle par défaut
+# Default rule
 all: $(TARGET)
 
 # Compilation
 $(TARGET):
 	$(NVCC) $(NVCC_FLAGS) -I$(INC_DIR) $(CU_SOURCES) $(CPP_SOURCES) -o $(TARGET)
 
-# Nettoyage
+# Cleaning
 clean:
 	rm -f $(TARGET)
