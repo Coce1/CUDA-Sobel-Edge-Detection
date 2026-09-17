@@ -45,7 +45,7 @@ make
 
 # Run baenchmarks
 ./sobel_benchmark
-
+```
 
 ## 📊 Benchmark & Performance Audit
 
