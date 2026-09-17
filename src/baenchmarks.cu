@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include <chrono>
+#include <iomanip>
 #include "../include/sobel.cuh"
 
 int main() {
@@ -47,8 +48,8 @@ int main() {
     cudaEventRecord(stop_gpu);
     cudaEventSynchronize(stop_gpu);
 
-    float gpu_duration = 0;
-    cudaEventElapsedTime(&gpu_duration, start_gpu, stop_gpu);
+    float shared_duration = 0;
+    cudaEventElapsedTime(&shared_duration, start_gpu, stop_gpu);
     cudaMemcpy(h_out_shared.data(), d_out, bytes, cudaMemcpyDeviceToHost);
 
     // 3. GPU Benchmark for Naive version
