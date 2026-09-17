@@ -9,7 +9,7 @@ SRC_DIR = src
 INC_DIR = include
 
 # Liste des fichiers sources
-CU_SOURCES = $(SRC_DIR)/benchmark.cu $(SRC_DIR)/sobel_naive.cu $(SRC_DIR)/sobel_shared.cu
+CU_SOURCES = $(SRC_DIR)/baenchmarks.cu $(SRC_DIR)/sobel_naive.cu $(SRC_DIR)/sobel_shared_tiled.cu
 CPP_SOURCES = $(SRC_DIR)/sobel_cpu.cpp
 
 # Nom de l'exécutable final
