@@ -8,9 +8,10 @@ A structured exploration of GPU-accelerated computing using modern C++ and NVIDI
 
 This repository documents the step-by-step development of parallel algorithms on NVIDIA GPUs, focusing on memory hierarchy optimization, thread synchronization, and spatial image filtering:
 
-
-3. **`03_sobel_basic.cu`**: 2D discrete convolution operator applied on a synthetic image matrix.
-4. **`04_sobel_cpu_vs_gpu.cu`**: Sequential CPU vs. Parallel GPU execution benchmark timed via `cudaEvent_t` ($2048 \times 2048$ resolution).
+1. **`src/sobel_cpu.cpp`**: Sequential CPU implementation.
+2. **`src/sobel_naive.cu`**: Basic 2D convolution using global memory.
+3. **`src/sobel_shared.cu`**: Optimized 2D convolution featuring shared memory and 1D coalesced memory access.
+4. **`src/benchmark.cu`**: Comparative benchmark suite (CPU vs. Naive GPU vs. Shared GPU) measuring execution time and effective bandwidth (GB/s).
 
 ---
 
@@ -45,4 +46,3 @@ make
 # Run specific modules
 ./01_hello
 ./04_benchmark
-./05_shared
