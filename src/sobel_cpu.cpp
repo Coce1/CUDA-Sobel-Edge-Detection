@@ -1,3 +1,5 @@
+#include <vector>
+#include <cmath>
 
 void sobelCPU(const std::vector<int>& in, std::vector<int>& out, int width, int height) {
     for (int y = 1; y < height - 1; y++) {
