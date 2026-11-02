@@ -25,3 +25,7 @@ $(TARGET):
 # Cleaning
 clean:
 	rm -f $(TARGET)
+
+# Execution du programme
+run:
+	./$(TARGET)
