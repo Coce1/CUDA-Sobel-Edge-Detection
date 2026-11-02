@@ -1,31 +1,41 @@
-# Compiler
-NVCC = nvcc
+# Compilateur
+NVCC ?= nvcc
 
-# Compilation options (Maximum optimization)
-NVCC_FLAGS = -O3
+# Architecture GPU : sm_75 = T4. Surcharger : make ARCH=sm_86
+ARCH ?= sm_75
 
-# Directory tree folders
+NVCC_FLAGS = -O3 -std=c++17 -arch=$(ARCH) -lineinfo -I./include
+
 SRC_DIR = src
 INC_DIR = include
+OBJ_DIR = obj
 
-# List of source files
-CU_SOURCES = $(SRC_DIR)/baenchmarks.cu $(SRC_DIR)/sobel_naive.cu $(SRC_DIR)/sobel_shared_tiled.cu
+TARGET = sobel_benchmark
+sed -i 's/^    /\t/' Makefile
+CU_SOURCES  = $(SRC_DIR)/baenchmarks.cu $(SRC_DIR)/sobel_naive.cu $(SRC_DIR)/sobel_shared_tiled.cu
 CPP_SOURCES = $(SRC_DIR)/sobel_cpu.cpp
 
-# Name of the final executable
-TARGET = sobel_benchmark
+OBJS = $(patsubst $(SRC_DIR)/%.cu,  $(OBJ_DIR)/%.o, $(CU_SOURCES)) \
+       $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(CPP_SOURCES))
 
-# Default rule
+# Tout header modifié => recompilation de tous les objets
+HEADERS = $(wildcard $(INC_DIR)/*.cuh)
+
 all: $(TARGET)
 
-# Compilation
-$(TARGET):
-	$(NVCC) $(NVCC_FLAGS) -I$(INC_DIR) $(CU_SOURCES) $(CPP_SOURCES) -o $(TARGET)
+$(TARGET): $(OBJS)
+	$(NVCC) $(NVCC_FLAGS) $^ -o $@
 
-# Cleaning
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cu $(HEADERS) | $(OBJ_DIR)
+	$(NVCC) $(NVCC_FLAGS) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HEADERS) | $(OBJ_DIR)
+	$(NVCC) $(NVCC_FLAGS) -c $< -o $@
+
+$(OBJ_DIR):
+	mkdir -p $@
+
 clean:
-	rm -f $(TARGET)
+	rm -rf $(OBJ_DIR) $(TARGET)
 
-# Execution du programme
-run:
-	./$(TARGET)
+.PHONY: all clean
