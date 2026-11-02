@@ -2,11 +2,6 @@
 *.o
 *.obj
 *.exe
-01_hello
-02_multiply
-03_sobel_basic
-04_benchmark
-05_shared
 
 # IDE & Editor metadata
 .vs/
@@ -16,3 +11,8 @@
 # CUDA Profiling Artifacts
 *.nvvp
 *.nvprof
+
+git add -A
+git status          # vérifier qu'aucun binaire ni obj/ n'apparaît
+git commit -m "Rewrite: CUDA_CHECK, RAII, warm-up benchmark, validation"
+git push
