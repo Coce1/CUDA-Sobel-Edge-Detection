@@ -3,16 +3,17 @@
 
 #include <vector>
 
-// CPU version declaration
-void sobelCPU(const std::vector<unsigned char>& in, std::vector<unsigned char>& out, int width, int height);
+// Convention commune aux 3 implémentations : les pixels du BORD de l'image valent 0
+// en sortie. (Avant : le naïf les laissait inchangés, le tuilé les calculait en
+// zero-padding -> sorties non équivalentes.) Images 8 bits, row-major.
 
+// Référence CPU.
+void sobelCPU(const std::vector<unsigned char>& in, std::vector<unsigned char>& out,
+              int width, int height);
 
-#ifdef __CUDACC__
-// Declaration of the Naive GPU Version (Global Memory)
-__global__ void sobelGPUNaive(const unsigned char* __restrict__ d_in, unsigned char* __restrict__ d_out, int width, int height);
+// Launchers hôte (les kernels restent privés à leur .cu). Pointeurs d_* en mémoire GPU.
+// Chaque launcher vérifie sa configuration de lancement ; l'appelant synchronise.
+void launchSobelNaive(const unsigned char* d_in, unsigned char* d_out, int width, int height);
+void launchSobelShared(const unsigned char* d_in, unsigned char* d_out, int width, int height);
 
-// Declaration of the GPU-optimized version (Shared Memory + Coalescing)
-__global__ void sobelFilter(const unsigned char* __restrict__ d_in, unsigned char* __restrict__ d_out, int width, int height);
-#endif
-
-#endif
+#endif // SOBEL_CUH
