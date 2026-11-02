@@ -21,17 +21,21 @@ This repository documents the step-by-step development of parallel algorithms on
 
 ## 📐 Mathematical Model (Sobel Convolution)
 
-The 2D Sobel operator computes spatial gradient vectors for each pixel coordinate $(x, y)$:
+The 2D Sobel operator computes spatial gradient vectors for each pixel coordinate $(x, y)$, using the horizontal kernel $G_x$ and the vertical kernel $G_y$ (each a $3 \times 3$ matrix convolved with the image $I$):
 
-$$
-G_x = \begin{bmatrix} -1 & 0 & +1 \\ -2 & 0 & +2 \\ -1 & 0 & +1 \end{bmatrix} * I \quad , \quad G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ +1 & +2 & +1 \end{bmatrix} * I
-$$
+```math
+G_x = \begin{bmatrix} -1 & 0 & +1 \\ -2 & 0 & +2 \\ -1 & 0 & +1 \end{bmatrix} \ast I
+```
+
+```math
+G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ +1 & +2 & +1 \end{bmatrix} \ast I
+```
 
 Gradient magnitude approximation:
 
-$$
-|\nabla I| = \min(|G_x| + |G_y|, 255)
-$$
+```math
+\lvert \nabla I \rvert = \min\left( \lvert G_x \rvert + \lvert G_y \rvert,\ 255 \right)
+```
 
 **Border convention (identical for CPU and both GPU kernels):** pixels on the image border are written as `0`. Previously the naive kernel left them unchanged while the tiled kernel used zero-padding, so the outputs were not equivalent.
 
@@ -114,9 +118,9 @@ Total program run time: 5.52 s.
 
 ### Architectural Analysis & Insights
 
-- **The naive kernel is about 2× faster than the shared-memory kernel, on both sizes** (2.09× at 2048², 2.22× at 8192²). The ratio is stable when the image grows 16× in size, so it is not a small-image or cache-size artifact. For a 3×3 stencil, the L1/L2 caches already capture the spatial reuse between neighboring threads; the explicit tile adds work without removing any global traffic: halo loads by border threads (divergent branches), byte-wide shared-memory stores and loads, and a barrier per block. This explanation is consistent with the measurements but has **not been confirmed with a profiler** (Nsight Compute would show the instruction and stall breakdown).
-- **Neither kernel is limited by DRAM bandwidth.** The best result (80.2 GB/s at 8192²) is about a quarter of the 320 GB/s theoretical peak of the T4. Each thread processes a single 1-byte pixel with 8 byte-wide loads, so the cost is likely dominated by the number of instructions and memory transactions per byte rather than by DRAM traffic. This is a hypothesis; the natural test is to process 4 pixels per thread with `uchar4` accesses.
-- **Larger image, better throughput.** The naive kernel goes from 28.3 to 40.1 Gpixel/s between 2048² and 8192²: at 0.148 ms, launch and tail effects weigh more on the small image.
+- **The naive kernel is about 2× faster than the shared-memory kernel, on both sizes** (2.09× at 2048², 2.22× at 8192²). The ratio stays stable when the image grows 16× in size, which argues against a small-image artifact. A plausible explanation: for a 3×3 stencil, the L1/L2 caches already capture the spatial reuse between neighboring threads, so the explicit tile adds work without removing global traffic (halo loads by border threads with divergent branches, byte-wide shared-memory stores and loads, and a barrier per block). This explanation is consistent with the measurements but has **not been confirmed with a profiler** (Nsight Compute would show the instruction and stall breakdown).
+- **Neither kernel appears limited by DRAM bandwidth.** The best result (80.2 GB/s at 8192²) is about a quarter of the 320 GB/s theoretical peak of the T4. Each thread processes a single 1-byte pixel with 8 byte-wide loads, so the cost is likely dominated by the number of instructions and memory transactions per byte rather than by DRAM traffic. This is a hypothesis; the natural test is to process 4 pixels per thread with `uchar4` accesses.
+- **Larger image, higher throughput.** The naive kernel goes from 28.3 to 40.1 Gpixel/s between 2048² and 8192². The cause was not investigated.
 - **The GPU speedup over the CPU (97× to 154×)** compares one optimized GPU kernel to a single sequential CPU thread; it is not a multi-core CPU comparison.
 
 ### Correction of the previous version
